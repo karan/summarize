@@ -4,10 +4,16 @@ import nltk.data
 from nltk import word_tokenize
 
 def content_to_sentences(text):
+    """
+    Converts passed text into a list of sentences.
+    """
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     return tokenizer.tokenize(text)
 
 def sentence_to_words(sentence):
+    """
+    Converts passed sentences into a list of words.
+    """
     return word_tokenize(sentence)
 
 
@@ -59,8 +65,13 @@ if __name__ == '__main__':
     """
     
     sentences = content_to_sentences(text) # split into list of sentences
+    #print "total sentences = %d" % len(sentences) # debug
+    
+    sentences = list(set(sentences)) # remove duplicate sentences
+    #print "unique sentences = %d" % len(sentences) # debug
+    
     all_sentence_words = []
     for s in sentences:
         all_sentence_words.append(sentence_to_words(s)) # split into list of words
         
-    print all_sentence_words
+    print all_sentence_words # debug

@@ -33,7 +33,3 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-# Komodo
-*.komodoproject
-*.komodo*
