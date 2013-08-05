@@ -11,14 +11,26 @@ def content_to_sentences(text):
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     return tokenizer.tokenize(text)
 
+def similar(s1, s2):
+    w1 = sentence_to_words(s1)
+    w2 = sentence_to_words(s2)
+    limit = min(len(w1), len(w2)) / 2 # 50% same words
+    same = 0
+    
+    for word1 in w1:
+        for word2 in w2:
+            if word1 == word2:
+                same += 1
+    return 1 if same > limit else 0
+
+
 def sentence_to_words(sentence):
     """
     Converts passed sentences into a list of words.
     Returns all words but stop words.
     """
-    #all_words = word_tokenize(sentence)
-    #return [word for word in all_words if word not in stopwords.words('english')]
-    return word_tokenize(sentence)
+    all_words = word_tokenize(sentence)
+    return [word.lower() for word in all_words if word not in stopwords.words('english')]
 
 
 if __name__ == '__main__':
@@ -67,15 +79,23 @@ if __name__ == '__main__':
     country's.
     """
     
-    sentences = content_to_sentences(text) # split into list of sentences
-    #print "total sentences = %d" % len(sentences) # debug
+    text = """
+    This is my sentence that does something here. Here is a sentence. And yet another.
     
-    sentences = list(set(sentences)) # remove duplicate sentences
-    #print "unique sentences = %d" % len(sentences) # debug
+    Another one and yet.
+    """
     
-    all_sentence_words = [] # nested list to hold list of words of a sentence
+    sentences = list(set(content_to_sentences(text))) # convert text to list of unique sentences
     
-    for s in sentences:
-        all_sentence_words.append(sentence_to_words(s)) # split into list of words
+    print sentences
+    
+    copy = list(sentences) # create a copy of the list of sentences
         
-    print all_sentence_words # debug
+    for (i, sentence1) in enumerate(copy): 
+        for j in range(i+1, len(copy)):
+            sentence2 = copy[j]
+            if similar(sentence1, sentence2):
+                sentences.remove(sentence2)
+    
+    print sentences
+    
