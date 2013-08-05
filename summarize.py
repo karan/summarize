@@ -79,23 +79,25 @@ if __name__ == '__main__':
     country's.
     """
     
-    text = """
-    This is my sentence that does something here. Here is a sentence. And yet another.
+    sentences = content_to_sentences(text) # convert text to list of unique sentences
     
-    Another one and yet.
-    """
-    
-    sentences = list(set(content_to_sentences(text))) # convert text to list of unique sentences
-    
-    print sentences
+    print sentences,
+    print len(sentences)
+    print '\n\n'
     
     copy = list(sentences) # create a copy of the list of sentences
-        
+    
     for (i, sentence1) in enumerate(copy): 
         for j in range(i+1, len(copy)):
             sentence2 = copy[j]
             if similar(sentence1, sentence2):
                 sentences.remove(sentence2)
     
-    print sentences
+    #sentences.reverse()
+    
+    print sentences,
+    print len(sentences)
+    print '\n\n'
+    
+    print " ".join(sentences)
     
