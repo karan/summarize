@@ -2,6 +2,7 @@
 
 import nltk.data
 from nltk import word_tokenize
+from nltk.corpus import stopwords
 
 def content_to_sentences(text):
     """
@@ -13,9 +14,11 @@ def content_to_sentences(text):
 def sentence_to_words(sentence):
     """
     Converts passed sentences into a list of words.
+    Returns all words but stop words.
     """
+    #all_words = word_tokenize(sentence)
+    #return [word for word in all_words if word not in stopwords.words('english')]
     return word_tokenize(sentence)
-
 
 
 if __name__ == '__main__':
@@ -70,7 +73,8 @@ if __name__ == '__main__':
     sentences = list(set(sentences)) # remove duplicate sentences
     #print "unique sentences = %d" % len(sentences) # debug
     
-    all_sentence_words = []
+    all_sentence_words = [] # nested list to hold list of words of a sentence
+    
     for s in sentences:
         all_sentence_words.append(sentence_to_words(s)) # split into list of words
         
