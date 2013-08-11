@@ -1,36 +1,34 @@
 #!/usr/bin/env python
 
-import nltk.data
-from nltk import word_tokenize
+from text.blob import TextBlob
 from nltk.corpus import stopwords
 
 def content_to_sentences(text):
     """
     Converts passed text into a list of sentences.
     """
-    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-    return tokenizer.tokenize(text)
-
-def similar(s1, s2):
-    w1 = sentence_to_words(s1)
-    w2 = sentence_to_words(s2)
-    limit = min(len(w1), len(w2)) / 2 # 50% same words
-    same = 0
-    
-    for word1 in w1:
-        for word2 in w2:
-            if word1 == word2:
-                same += 1
-    return 1 if same > limit else 0
-
+    blob = TextBlob(text)
+    return [str(sentence) for sentence in blob.sentences]
 
 def sentence_to_words(sentence):
     """
     Converts passed sentences into a list of words.
     Returns all words but stop words.
     """
-    all_words = word_tokenize(sentence)
-    return [word.lower() for word in all_words if word not in stopwords.words('english')]
+    blob = TextBlob(sentence)
+    return [word.lower() for word in blob.words if word not in stopwords.words('english')]
+
+def similar(s1, s2):
+    w1 = sentence_to_words(s1)
+    w2 = sentence_to_words(s2)
+    limit = min(len(w1), len(w2)) / 2 # 50% same words
+    
+    same = 0
+    for word1 in w1:
+        for word2 in w2:
+            if word1 == word2:
+                same += 1
+    return 1 if same > limit else 0
 
 
 if __name__ == '__main__':
@@ -81,9 +79,9 @@ if __name__ == '__main__':
     
     sentences = content_to_sentences(text) # convert text to list of unique sentences
     
-    print sentences,
-    print len(sentences)
-    print '\n\n'
+    #print sentences,
+    #print len(sentences)
+    #print '\n\n'
     
     copy = list(sentences) # create a copy of the list of sentences
     
@@ -92,12 +90,11 @@ if __name__ == '__main__':
             sentence2 = copy[j]
             if similar(sentence1, sentence2):
                 sentences.remove(sentence2)
-    
-    #sentences.reverse()
-    
-    print sentences,
-    print len(sentences)
-    print '\n\n'
-    
+
+        
+    #print sentences,
+    #print len(sentences)
+    #print '\n\n'
+        
     print " ".join(sentences)
     
